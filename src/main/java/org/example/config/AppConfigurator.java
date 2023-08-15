@@ -1,10 +1,14 @@
 package org.example.config;
 
+import lombok.ToString;
 import org.example.factory.GameObjectPrototypeFactory;
 import org.example.gameObjects.GameObject;
 
+import java.util.Set;
+@ToString
 public class AppConfigurator {
     private static AppConfigurator instance;
+    private final GameObjectsScanner gameObjectsScanner = GameObjectsScanner.getInstance();
     private final PrototypeLoader prototypeLoader = PrototypeLoader.getInstance();
     private final GameObjectPrototypeFactory gameObjectFactory = GameObjectPrototypeFactory.getInstance();
 
@@ -24,11 +28,14 @@ public class AppConfigurator {
         // TODO: implement gameField initialization with cells.
     }
 
+
     private void registerPrototypes() {
-        for (PrototypeYamlPath path : PrototypeYamlPath.values()) {
-            Class<?> organismClass = path.getOrganismClass();
-            GameObject prototype = (GameObject) prototypeLoader.loadPrototype(organismClass);
-            gameObjectFactory.registerPrototype(prototype);
-        }
+        gameObjectsScanner.
+                getAllGameObjectsClasses()
+                .stream()
+                .map(prototypeLoader::loadPrototype)
+                .forEach(prototype -> gameObjectFactory.registerPrototype((GameObject) prototype));
     }
+
+
 }

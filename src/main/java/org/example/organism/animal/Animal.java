@@ -13,7 +13,7 @@ import org.example.organism.Organism;
 @Getter
 @EqualsAndHashCode
 @ToString
-public abstract class Animal implements Organism, GameObjectLabel {
+public abstract class Animal implements Organism{
     private int maxWeight;
     private int maxAmount;
     private int maxSpeed;
