@@ -1,11 +1,19 @@
 package org.example.organism.animal;
 
 
-import org.example.config.ConfigYamlPatch;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.example.gameObjects.GameObjectLabel;
 import org.example.organism.Organism;
-
-public abstract class Animal implements Organism, GameObjectLabel, ConfigYamlPatch {
+@NoArgsConstructor
+@SuperBuilder
+@Getter
+@EqualsAndHashCode
+@ToString
+public abstract class Animal implements Organism, GameObjectLabel {
     private int maxWeight;
     private int maxAmount;
     private int maxSpeed;

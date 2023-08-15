@@ -1,12 +1,14 @@
 package org.example.organism.animal.herbivore;
-
-import org.example.config.ConfigYamlPathEnum;
+import lombok.experimental.SuperBuilder;
 import org.example.gameObjects.GameObject;
+import org.example.gameObjects.GameObjectLabel;
 
-public class Horse extends Herbivore{
+@SuperBuilder
+public class Horse extends Herbivore implements GameObjectLabel {
 
     @Override
     public void play() {
+        System.out.println("Hello");
 
     }
 
@@ -15,8 +17,4 @@ public class Horse extends Herbivore{
         return null;
     }
 
-    @Override
-    public String getYamlPatch() {
-        return ConfigYamlPathEnum.HORSE.getYamlPath();
-    }
 }

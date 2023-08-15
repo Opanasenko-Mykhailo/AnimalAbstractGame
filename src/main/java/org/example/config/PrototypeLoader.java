@@ -1,16 +1,22 @@
 package org.example.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import org.example.gameObjects.GameObject;
+import org.example.exeption.InitGameException;
+
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PrototypeLoader {
     private static PrototypeLoader instance;
-    private final ObjectMapper objectMapper = new YAMLMapper();
+    private final Map<Class<?>, PrototypeYamlPath> classToYamlPathMap = new HashMap<>();
+
     private PrototypeLoader() {
+        for (PrototypeYamlPath enumValue : PrototypeYamlPath.values()) {
+            classToYamlPathMap.put(enumValue.getOrganismClass(), enumValue);
+        }
     }
 
     public static PrototypeLoader getInstance() {
@@ -19,22 +25,32 @@ public class PrototypeLoader {
         }
         return instance;
     }
-    private <T> T loadObject(Class<T> type) throws Exception {
-        T gameObject;
 
-        try {
-            gameObject = objectMapper.readValue(configFilePath, type);
-        } catch (IOException e) {
-            String message = String.format("Cannot find config file %s for class %s",
-                    configFilePath.getFile(),
-                    type);
-            throw new Exception(message, e);
+    public <T> T loadPrototype(Class<T> type) {
+        PrototypeYamlPath yamlPathEnum = classToYamlPathMap.get(type);
+        if (yamlPathEnum == null) {
+            throw new InitGameException("Yaml path not found for class: " + type);
         }
 
-        return gameObject;
+        return loadObject(yamlPathEnum.getYamlFilePath(), type);
     }
-    private URL getConfigFilePath(Class<?> type) {
-        config =
-        return type.getClassLoader().getResource(config.fileName());
+
+    private <T> T loadObject(String yamlPath, Class<T> type) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        T organism;
+        try {
+            URL resource = getClass().getClassLoader().getResource(yamlPath);
+            if (resource == null) {
+                throw new InitGameException("Config file not found: " + yamlPath);
+            }
+
+            organism = objectMapper.readValue(resource, type);
+        } catch (IOException e) {
+            String message = String.format("Error reading config file %s for class %s",
+                    yamlPath, type);
+            throw new InitGameException(message, e);
+        }
+
+        return organism;
     }
 }
