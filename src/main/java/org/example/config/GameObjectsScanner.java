@@ -21,7 +21,6 @@ public class GameObjectsScanner {
     }
 
     public Set<Class<? extends GameObjectLabel>> getAllGameObjectsClasses() {
-        Set<Class<? extends GameObjectLabel>> classes = reflections.getSubTypesOf(GameObjectLabel.class);
-        return classes;
+        return reflections.getSubTypesOf(GameObjectLabel.class);
     }
 }

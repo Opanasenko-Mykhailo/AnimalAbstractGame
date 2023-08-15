@@ -1,7 +1,6 @@
 package org.example.config;
 
 import lombok.Getter;
-import org.example.organism.Organism;
 import org.example.organism.animal.herbivore.Horse;
 import org.example.organism.animal.predator.Wolf;
 

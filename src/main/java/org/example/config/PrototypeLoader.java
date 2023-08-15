@@ -1,23 +1,17 @@
 package org.example.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import org.example.exeption.InitGameException;
 
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PrototypeLoader {
     private static PrototypeLoader instance;
-    private final Map<Class<?>, PrototypeYamlPath> classToYamlPathMap = new HashMap<>();
-
-    private PrototypeLoader() {
-        for (PrototypeYamlPath enumValue : PrototypeYamlPath.values()) {
-            classToYamlPathMap.put(enumValue.getOrganismClass(), enumValue);
-        }
-    }
+    private final ObjectMapper objectMapper = new YAMLMapper();
 
     public static PrototypeLoader getInstance() {
         if (instance == null) {
@@ -27,7 +21,7 @@ public class PrototypeLoader {
     }
 
     public <T> T loadPrototype(Class<T> type) {
-        PrototypeYamlPath yamlPathEnum = classToYamlPathMap.get(type);
+        PrototypeYamlPath yamlPathEnum = getEnumByClass(type);
         if (yamlPathEnum == null) {
             throw new InitGameException("Yaml path not found for class: " + type);
         }
@@ -35,22 +29,36 @@ public class PrototypeLoader {
         return loadObject(yamlPathEnum.getYamlFilePath(), type);
     }
 
-    private <T> T loadObject(String yamlPath, Class<T> type) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        T organism;
-        try {
-            URL resource = getClass().getClassLoader().getResource(yamlPath);
-            if (resource == null) {
-                throw new InitGameException("Config file not found: " + yamlPath);
+    private <T> PrototypeYamlPath getEnumByClass(Class<T> type) {
+        for (PrototypeYamlPath enumValue : PrototypeYamlPath.values()) {
+            if (enumValue.getOrganismClass().equals(type)) {
+                return enumValue;
             }
+        }
+        return null;
+    }
+    private <T> T loadObject(String configFilePath, Class<T> type) {
+        T gameObject;
+        URL url = stringToURL(configFilePath);
 
-            organism = objectMapper.readValue(resource, type);
+        try {
+            gameObject = objectMapper.readValue(configFilePath, type);
         } catch (IOException e) {
-            String message = String.format("Error reading config file %s for class %s",
-                    yamlPath, type);
+            String message = String.format("Cannot find config file %s for class %s",
+                    url.getFile(),
+                    type);
             throw new InitGameException(message, e);
         }
 
-        return organism;
+        return gameObject;
+    }
+    public URL stringToURL(String urlString) {
+        try {
+            return new URL(urlString);
+        } catch (MalformedURLException e) {
+            // Обробка винятку, якщо URL некоректний
+            e.printStackTrace();
+            return null;
+        }
     }
 }
