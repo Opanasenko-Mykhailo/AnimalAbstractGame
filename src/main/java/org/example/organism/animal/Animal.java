@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.example.gameObjects.GameObjectLabel;
 import org.example.organism.Organism;
 @NoArgsConstructor
 @SuperBuilder

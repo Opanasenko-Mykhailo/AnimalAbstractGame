@@ -1,17 +1,17 @@
 package org.example.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import org.example.exeption.InitGameException;
-
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.InputStream;
 import java.net.URL;
 
 public class PrototypeLoader {
     private static PrototypeLoader instance;
-    private final ObjectMapper objectMapper = new YAMLMapper();
+
+    private PrototypeLoader() {
+    }
 
     public static PrototypeLoader getInstance() {
         if (instance == null) {
@@ -21,44 +21,25 @@ public class PrototypeLoader {
     }
 
     public <T> T loadPrototype(Class<T> type) {
-        PrototypeYamlPath yamlPathEnum = getEnumByClass(type);
-        if (yamlPathEnum == null) {
-            throw new InitGameException("Yaml path not found for class: " + type);
-        }
-
-        return loadObject(yamlPathEnum.getYamlFilePath(), type);
-    }
-
-    private <T> PrototypeYamlPath getEnumByClass(Class<T> type) {
-        for (PrototypeYamlPath enumValue : PrototypeYamlPath.values()) {
-            if (enumValue.getOrganismClass().equals(type)) {
-                return enumValue;
-            }
+        URL configFilePath = getConfigFilePath(type);
+        if (configFilePath != null) {
+            return loadObject(configFilePath, type);
         }
         return null;
     }
-    private <T> T loadObject(String configFilePath, Class<T> type) {
-        T gameObject;
-        URL url = stringToURL(configFilePath);
 
-        try {
-            gameObject = objectMapper.readValue(configFilePath, type);
-        } catch (IOException e) {
-            String message = String.format("Cannot find config file %s for class %s",
-                    url.getFile(),
-                    type);
-            throw new InitGameException(message, e);
-        }
-
-        return gameObject;
+    private URL getConfigFilePath(Class<?> type) {
+        PrototypeYamlPath yamlPath = PrototypeYamlPath.valueOf(type.getSimpleName().toUpperCase());
+        return getClass().getClassLoader().getResource(yamlPath.getYamlFilePath());
     }
-    public URL stringToURL(String urlString) {
-        try {
-            return new URL(urlString);
-        } catch (MalformedURLException e) {
-            // Обробка винятку, якщо URL некоректний
+
+    private <T> T loadObject(URL configFilePath, Class<T> type) {
+        try (InputStream input = configFilePath.openStream()) {
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            return mapper.readValue(input, type);
+        } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 }

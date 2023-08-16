@@ -1,11 +1,11 @@
 package org.example.factory;
-import lombok.ToString;
+
 import org.example.gameObjects.GameObject;
 
 import java.util.HashMap;
 import java.util.Map;
-@ToString
-public class GameObjectPrototypeFactory implements PrototypeFactory<GameObject>{
+
+public class GameObjectPrototypeFactory implements PrototypeFactory<GameObject> {
     private static GameObjectPrototypeFactory instance;
     private final Map<Class<? extends GameObject>, GameObject> prototypes = new HashMap<>();
 
