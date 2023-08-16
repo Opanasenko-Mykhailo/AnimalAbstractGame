@@ -2,6 +2,7 @@ package org.example.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.example.config.enums.PrototypeYamlPath;
 
 import java.io.IOException;
 import java.io.InputStream;

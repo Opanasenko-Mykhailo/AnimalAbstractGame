@@ -1,4 +1,4 @@
-package org.example.organism.animal.predator;
+package org.example.entity.organism.animal.predator;
 
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,11 +11,6 @@ import org.example.gameObjects.GameObjectLabel;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Wolf extends Predator implements GameObjectLabel {
-
-    @Override
-    public void play() {
-        System.out.println("Wolf hello");
-    }
 
     @Override
     public Wolf reproduce() {

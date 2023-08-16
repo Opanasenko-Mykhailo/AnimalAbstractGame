@@ -1,4 +1,4 @@
-package org.example.organism;
+package org.example.entity.organism;
 
 import org.example.gameObjects.GameObject;
 

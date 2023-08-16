@@ -1,8 +1,8 @@
-package org.example.config;
+package org.example.config.enums;
 
 import lombok.Getter;
-import org.example.organism.animal.herbivore.Horse;
-import org.example.organism.animal.predator.Wolf;
+import org.example.entity.organism.animal.herbivore.Horse;
+import org.example.entity.organism.animal.predator.Wolf;
 
 @Getter
 public enum PrototypeYamlPath {

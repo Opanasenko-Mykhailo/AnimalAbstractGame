@@ -3,8 +3,8 @@ package org.example;
 import org.example.config.AppConfigurator;
 import org.example.factory.GameObjectPrototypeFactory;
 import org.example.gameObjects.GameObject;
-import org.example.organism.animal.herbivore.Horse;
-import org.example.organism.animal.predator.Wolf;
+import org.example.entity.organism.animal.herbivore.Horse;
+import org.example.entity.organism.animal.predator.Wolf;
 
 import java.util.HashSet;
 import java.util.Set;
