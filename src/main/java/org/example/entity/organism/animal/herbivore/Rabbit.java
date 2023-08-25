@@ -1,5 +1,4 @@
-package org.example.entity.organism.animal.predator;
-
+package org.example.entity.organism.animal.herbivore;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,11 +9,10 @@ import org.example.gameObjects.GameObjectLabel;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Wolf extends Predator implements GameObjectLabel {
-
+public class Rabbit extends Herbivore implements GameObjectLabel {
     @Override
-    public Wolf reproduce() {
-        return Wolf.builder()
+    public Rabbit reproduce() {
+        return Rabbit.builder()
                 .limits(getLimits())
                 .isAlive(true)
                 .icon(getIcon())
@@ -23,4 +21,5 @@ public class Wolf extends Predator implements GameObjectLabel {
                 .age(1)
                 .build();
     }
+
 }

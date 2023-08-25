@@ -1,2 +1,4 @@
-maxWeight: 1
-maxAmount: 200
+icon: 🌿
+limits:
+  maxWeight: 1
+  maxAmount: 200

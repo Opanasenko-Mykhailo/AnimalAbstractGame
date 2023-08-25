@@ -1,9 +1,36 @@
 package org.example.entity.organism.plant;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.example.entity.map.Cell;
+import org.example.entity.organism.Limits;
 import org.example.entity.organism.Organism;
 
+import java.util.concurrent.locks.ReentrantLock;
+
+@NoArgsConstructor
+@SuperBuilder
+@Getter
+@EqualsAndHashCode
+@ToString
 public abstract class Plant implements Organism {
-    private int maxWeight;
-    private int maxAmount;
+    private static long serialUID = 1L;
+    private int lastReproductionYear = 0;
+
+    @Builder.Default
+    private final long UID = serialUID++;
+    @Builder.Default
+    private ReentrantLock lock = new ReentrantLock();
+    @JsonIgnore
+    private Cell cell;
+    private String icon;
+    private Limits limits;
+
+    public void play() {
+    }
+    public void setGameObjectCell(Cell cell){
+        this.cell = cell;
+    }
 }

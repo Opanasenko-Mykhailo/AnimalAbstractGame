@@ -10,11 +10,11 @@ import org.example.gameObjects.GameObjectLabel;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Wolf extends Predator implements GameObjectLabel {
+public class Fox extends Predator implements GameObjectLabel {
 
     @Override
-    public Wolf reproduce() {
-        return Wolf.builder()
+    public Fox reproduce() {
+        return Fox.builder()
                 .limits(getLimits())
                 .isAlive(true)
                 .icon(getIcon())

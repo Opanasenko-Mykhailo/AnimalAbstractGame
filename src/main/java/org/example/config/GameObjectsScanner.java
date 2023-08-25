@@ -2,8 +2,6 @@ package org.example.config;
 
 import org.example.gameObjects.GameObjectLabel;
 import org.reflections.Reflections;
-
-import java.util.HashSet;
 import java.util.Set;
 
 public class GameObjectsScanner {

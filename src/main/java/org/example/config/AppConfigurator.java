@@ -1,16 +1,24 @@
 package org.example.config;
 
 import lombok.ToString;
+import org.example.ConsoleOutput;
+import org.example.Simulation;
+import org.example.entity.map.GameMap;
 import org.example.factory.GameObjectPrototypeFactory;
 import org.example.gameObjects.GameObject;
 
-import java.util.Set;
+import java.util.*;
+
 @ToString
 public class AppConfigurator {
     private static AppConfigurator instance;
     private final GameObjectsScanner gameObjectsScanner = GameObjectsScanner.getInstance();
     private final PrototypeLoader prototypeLoader = PrototypeLoader.getInstance();
     private final GameObjectPrototypeFactory gameObjectFactory = GameObjectPrototypeFactory.getInstance();
+    private final GameMapGenerator gameMapGenerator = GameMapGenerator.getInstance();
+    private final CellGenerator cellGenerator = CellGenerator.getInstance();
+    private final CellPopulator cellPopulator = CellPopulator.getInstance();
+
 
     private AppConfigurator() {
     }
@@ -24,8 +32,11 @@ public class AppConfigurator {
 
     public void init() {
         registerPrototypes();
-        // TODO: implement gameField config loading.
-        // TODO: implement gameField initialization with cells.
+        GameMap.setInstance(generateGameMap());
+        cellPopulator.populateGameMap(GameMap.getInstance());
+        ConsoleOutput.printGameMapWithStatistics(GameMap.getInstance());
+        Simulation.getInstance().startSimulation();
+
     }
 
 
@@ -37,5 +48,7 @@ public class AppConfigurator {
                 .forEach(prototype -> gameObjectFactory.registerPrototype((GameObject) prototype));
     }
 
-
+    private GameMap generateGameMap() {
+        return gameMapGenerator.createGameMap();
+    }
 }

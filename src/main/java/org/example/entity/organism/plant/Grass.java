@@ -1,16 +1,24 @@
 package org.example.entity.organism.plant;
 
-import org.example.gameObjects.GameObject;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-public class Grass extends Plant{
+import org.example.gameObjects.GameObjectLabel;
+
+@NoArgsConstructor
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class Grass extends Plant implements GameObjectLabel {
+
 
     @Override
-    public void play() {
-
-    }
-
-    @Override
-    public GameObject reproduce() {
-        return null;
+    public Grass reproduce() {
+        return Grass.builder()
+                .limits(getLimits())
+                .icon(getIcon())
+                .build();
     }
 }

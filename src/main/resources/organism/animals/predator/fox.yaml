@@ -1,22 +1,22 @@
-icon: 🐇
+icon: 🦊
 limits:
-  maxWeight: 2
-  maxAmount: 150
+  maxWeight: 8
+  maxAmount: 30
   maxSpeed: 2
-  maxFood: 0.45
+  maxFood: 2
 stringTargetMatrix:
   Wolf: 0
   Boa: 0
-  Fox: 0
   Bear: 0
   Eagle: 0
   Horse: 0
   Deer: 0
-  Mouse: 0
+  Rabbit: 70
+  Mouse: 90
   Goat: 0
   Sheep: 0
   Boar: 0
   Buffalo: 0
-  Duck: 0
-  Caterpillar: 0
-  Grass: 100
+  Duck: 60
+  Caterpillar: 40
+  Grass: 0
