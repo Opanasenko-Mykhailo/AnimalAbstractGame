@@ -14,11 +14,9 @@ public class Duck extends Herbivore implements GameObjectLabel {
     public Duck reproduce() {
         return Duck.builder()
                 .limits(getLimits())
-                .isAlive(true)
                 .icon(getIcon())
                 .stringTargetMatrix(getStringTargetMatrix())
                 .famine(getLimits().getMaxFood())
-                .age(1)
                 .build();
     }
 

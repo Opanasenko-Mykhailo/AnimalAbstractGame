@@ -14,11 +14,9 @@ public class Boar extends Herbivore implements GameObjectLabel {
     public Boar reproduce() {
         return Boar.builder()
                 .limits(getLimits())
-                .isAlive(true)
                 .icon(getIcon())
                 .stringTargetMatrix(getStringTargetMatrix())
                 .famine(getLimits().getMaxFood())
-                .age(1)
                 .build();
     }
 

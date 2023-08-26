@@ -9,7 +9,7 @@ public interface GameObject extends Reproducible{
     Limits getLimits();
     void setGameObjectCell(Cell cell);
     Cell getCell();
-    public abstract String getIcon();
+    String getGameObjectIcon();
 
 }
 

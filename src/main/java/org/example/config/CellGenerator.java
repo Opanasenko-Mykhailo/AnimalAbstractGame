@@ -6,12 +6,9 @@ import org.example.entity.map.Cell;
 @Getter
 public class CellGenerator {
     private final GameObjectGenerator gameObjectGenerator = GameObjectGenerator.getInstance();
+    @Getter
     private static final CellGenerator instance = new CellGenerator();
     private CellGenerator() {
-    }
-
-    public static CellGenerator getInstance() {
-        return instance;
     }
 
     private Cell createCell() {

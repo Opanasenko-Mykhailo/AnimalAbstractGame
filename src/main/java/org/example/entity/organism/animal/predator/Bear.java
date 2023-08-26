@@ -16,11 +16,9 @@ public class Bear extends Predator implements GameObjectLabel {
     public Bear reproduce() {
         return Bear.builder()
                 .limits(getLimits())
-                .isAlive(true)
                 .icon(getIcon())
                 .stringTargetMatrix(getStringTargetMatrix())
                 .famine(getLimits().getMaxFood())
-                .age(1)
                 .build();
     }
 }

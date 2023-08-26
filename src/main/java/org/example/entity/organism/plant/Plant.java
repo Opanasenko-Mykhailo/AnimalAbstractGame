@@ -27,10 +27,17 @@ public abstract class Plant implements Organism {
     private Cell cell;
     private String icon;
     private Limits limits;
-
+    private boolean isEaten = false;
     public void play() {
+        //Не реалізовано
     }
+    @Override
     public void setGameObjectCell(Cell cell){
         this.cell = cell;
     }
+    @Override
+    public String getGameObjectIcon(){
+        return icon;
+    }
+
 }

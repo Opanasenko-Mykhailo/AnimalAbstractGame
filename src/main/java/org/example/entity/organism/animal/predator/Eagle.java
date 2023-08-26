@@ -16,11 +16,9 @@ public class Eagle extends Predator implements GameObjectLabel {
     public Eagle reproduce() {
         return Eagle.builder()
                 .limits(getLimits())
-                .isAlive(true)
                 .icon(getIcon())
                 .stringTargetMatrix(getStringTargetMatrix())
                 .famine(getLimits().getMaxFood())
-                .age(1)
                 .build();
     }
 }

@@ -14,11 +14,9 @@ public class Deer extends Herbivore implements GameObjectLabel {
     public Deer reproduce() {
         return Deer.builder()
                 .limits(getLimits())
-                .isAlive(true)
                 .icon(getIcon())
                 .stringTargetMatrix(getStringTargetMatrix())
                 .famine(getLimits().getMaxFood())
-                .age(1)
                 .build();
     }
 

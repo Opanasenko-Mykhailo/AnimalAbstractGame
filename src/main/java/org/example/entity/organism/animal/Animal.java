@@ -4,11 +4,11 @@ package org.example.entity.organism.animal;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.example.Probably;
+import org.example.utils.Probably;
 import org.example.config.Statistics;
 import org.example.entity.map.Cell;
 
-import org.example.entity.behavior.CellHelper;
+import org.example.entity.map.CellHelper;
 import org.example.entity.organism.Limits;
 import org.example.entity.organism.Movable;
 import org.example.entity.organism.Organism;
@@ -17,9 +17,8 @@ import org.example.gameObjects.GameObject;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
-import static org.example.entity.behavior.CellHelper.removeOrganism;
+import static org.example.entity.map.CellHelper.removeOrganism;
 
 @NoArgsConstructor
 @SuperBuilder
@@ -27,7 +26,6 @@ import static org.example.entity.behavior.CellHelper.removeOrganism;
 @ToString
 public abstract class Animal implements Organism, Movable {
     private static long serialUID = 1L;
-
     @Builder.Default
     private final long UID = serialUID++;
     @Builder.Default
@@ -37,15 +35,10 @@ public abstract class Animal implements Organism, Movable {
     private String icon;
     private Limits limits;
     @Setter
-    private boolean isAlive = true;
-    private boolean isReproduced = false;
-    @Setter
-    private boolean isEaten = false;
-    private boolean isDiedFromStarvation = false;
-    private int weight;
-    @Setter
     private double famine;
-    private int age;
+
+    private final int PROBABILITY_OF_REPRODUCTION = 10;
+    private final int DECREASED_HUNGER = 20;
 
     @Builder.Default
     private Map<String, Integer> stringTargetMatrix = new HashMap<>();
@@ -58,19 +51,25 @@ public abstract class Animal implements Organism, Movable {
     }
 
     @Override
-    public void play() {
-        this.eat();
-        this.move();
-
+    public String getGameObjectIcon(){
+        return icon;
     }
 
-    public void eat() {
-        GameObject potencialFood = findPotentialFood();
-        if (canEatFood(potencialFood)) {
-            eatFood(potencialFood);
-            Statistics.getInstance().incrementEatenAnimals();
-        }
+    @Override
+    public void play() {
+        this.move();
+        this.eat();
+        this.reproduceAnimal(this);
+        this.decreaseFamine();
+    }
 
+    private void eat() {
+        GameObject potentialFood = findPotentialFood();
+        if (canEatFood(potentialFood)) {
+            assert potentialFood != null;
+            eatFood(potentialFood);
+            Statistics.getInstance().gameObjectEaten(potentialFood);
+        }
     }
 
     private void eatFood(GameObject food) {
@@ -112,7 +111,7 @@ public abstract class Animal implements Organism, Movable {
                         .flatMap(entry -> entry.getValue().stream())
                         .filter(resident -> resident instanceof Organism)
                         .map(resident -> (Organism) resident)
-                        .collect(Collectors.toList());
+                        .toList();
 
                 if (!potentialFood.isEmpty()) {
                     int randomIndex = Probably.randomInt(0, potentialFood.size());
@@ -130,32 +129,28 @@ public abstract class Animal implements Organism, Movable {
 
     public void decreaseFamine() {
         double maxFood = limits.getMaxFood();
-        double decreaseAmount = maxFood * 0.2; // 10% від maxFood
+        double decreaseAmount = maxFood * DECREASED_HUNGER / 100; // % від maxFood
         setFamine(getFamine() - decreaseAmount);
         dieFromStarvation();
     }
 
     public void dieFromStarvation() {
         if (getFamine() < 0) {
-            setAlive(false);
             Cell currentCell = getCell();
             if (currentCell != null) {
                 synchronized (currentCell.getLock()) {
                     CellHelper.removeOrganism(currentCell, this);
-                    Statistics.getInstance().incrementDiedFromStarvation();
-                    isDiedFromStarvation = true;
+                    Statistics.getInstance().diedFromStarvation(this);
                 }
             }
         }
     }
 
-
     @Override
     public void move() {
-        if (!isAlive || limits.getMaxSpeed() < 1) {
+        if (limits.getMaxSpeed() < 1) {
             return;
         }
-
         Cell currentCell = getCell();
         if (currentCell == null) {
             return;
@@ -174,14 +169,6 @@ public abstract class Animal implements Organism, Movable {
         }
     }
 
-    public GameObject multiply() {
-        if (Probably.calculate(10)) { // 10% ймовірність розмноження
-            return GameObjectPrototypeFactory.getInstance().createPrototype(this.getClass());
-        } else {
-            return null;
-        }
-    }
-
     public void reproduceAnimal(Animal parentAnimal) {
         GameObject newAnimal = parentAnimal.multiply();
         if (newAnimal != null) {
@@ -189,10 +176,17 @@ public abstract class Animal implements Organism, Movable {
             if (currentCell != null) {
                 synchronized (currentCell.getLock()) {
                     CellHelper.addOrganism(currentCell, newAnimal);
-                    Statistics.getInstance().incrementBornAnimals();
-                    isReproduced = true;
+                    Statistics.getInstance().gameObjectsReproduce(this);
                 }
             }
+        }
+    }
+
+    public GameObject multiply() {
+        if (Probably.calculate(PROBABILITY_OF_REPRODUCTION)) { //Ймовірність розмноження
+            return GameObjectPrototypeFactory.getInstance().createPrototype(this.getClass());
+        } else {
+            return null;
         }
     }
 }

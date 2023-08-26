@@ -15,11 +15,9 @@ public class Horse extends Herbivore implements GameObjectLabel {
     public Horse reproduce() {
         return Horse.builder()
                 .limits(getLimits())
-                .isAlive(true)
                 .icon(getIcon())
                 .stringTargetMatrix(getStringTargetMatrix())
                 .famine(getLimits().getMaxFood())
-                .age(1)
                 .build();
     }
 

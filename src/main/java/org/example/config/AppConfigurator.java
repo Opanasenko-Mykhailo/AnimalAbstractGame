@@ -1,13 +1,10 @@
 package org.example.config;
 
 import lombok.ToString;
-import org.example.ConsoleOutput;
-import org.example.Simulation;
+import org.example.engine.Simulation;
 import org.example.entity.map.GameMap;
 import org.example.factory.GameObjectPrototypeFactory;
 import org.example.gameObjects.GameObject;
-
-import java.util.*;
 
 @ToString
 public class AppConfigurator {
@@ -18,6 +15,7 @@ public class AppConfigurator {
     private final GameMapGenerator gameMapGenerator = GameMapGenerator.getInstance();
     private final CellGenerator cellGenerator = CellGenerator.getInstance();
     private final CellPopulator cellPopulator = CellPopulator.getInstance();
+    private final Simulation simulation = Simulation.getInstance();
 
 
     private AppConfigurator() {
@@ -34,12 +32,9 @@ public class AppConfigurator {
         registerPrototypes();
         GameMap.setInstance(generateGameMap());
         cellPopulator.populateGameMap(GameMap.getInstance());
-        ConsoleOutput.printGameMapWithStatistics(GameMap.getInstance());
-        Simulation.getInstance().startSimulation();
+        simulation.startSimulation();
 
     }
-
-
     private void registerPrototypes() {
         gameObjectsScanner.
                 getAllGameObjectsClasses()

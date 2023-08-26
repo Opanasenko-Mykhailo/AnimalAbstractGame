@@ -1,8 +1,7 @@
-package org.example.entity.behavior;
+package org.example.entity.map;
 
 
-import org.example.Probably;
-import org.example.entity.map.Cell;
+import org.example.utils.Probably;
 import org.example.gameObjects.GameObject;
 
 import java.util.*;

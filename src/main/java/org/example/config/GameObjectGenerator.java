@@ -1,7 +1,7 @@
 package org.example.config;
 
 import lombok.Getter;
-import org.example.Probably;
+import org.example.utils.Probably;
 import org.example.entity.map.Cell;
 import org.example.factory.GameObjectPrototypeFactory;
 import org.example.factory.PrototypeFactory;
@@ -15,13 +15,10 @@ import java.util.Set;
 @Getter
 public class GameObjectGenerator {
     private static final PrototypeFactory<GameObject> prototypeFactory = GameObjectPrototypeFactory.getInstance();
+    @Getter
     private static final GameObjectGenerator instance = new GameObjectGenerator();
 
     private GameObjectGenerator() {
-    }
-
-    public static GameObjectGenerator getInstance() {
-        return instance;
     }
 
     public Map<Class<? extends GameObject>, Set<GameObject>> generateGameObjects(Cell cell) {

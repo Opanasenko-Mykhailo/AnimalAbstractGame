@@ -16,11 +16,9 @@ public class Boa extends Predator implements GameObjectLabel {
     public Boa reproduce() {
         return Boa.builder()
                 .limits(getLimits())
-                .isAlive(true)
                 .icon(getIcon())
                 .stringTargetMatrix(getStringTargetMatrix())
                 .famine(getLimits().getMaxFood())
-                .age(1)
                 .build();
     }
 }

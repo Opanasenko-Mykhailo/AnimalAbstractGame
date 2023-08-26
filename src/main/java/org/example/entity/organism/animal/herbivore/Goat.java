@@ -14,11 +14,9 @@ public class Goat extends Herbivore implements GameObjectLabel {
     public Goat reproduce() {
         return Goat.builder()
                 .limits(getLimits())
-                .isAlive(true)
                 .icon(getIcon())
                 .stringTargetMatrix(getStringTargetMatrix())
                 .famine(getLimits().getMaxFood())
-                .age(1)
                 .build();
     }
 

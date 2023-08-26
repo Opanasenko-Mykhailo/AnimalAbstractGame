@@ -14,11 +14,9 @@ public class Rabbit extends Herbivore implements GameObjectLabel {
     public Rabbit reproduce() {
         return Rabbit.builder()
                 .limits(getLimits())
-                .isAlive(true)
                 .icon(getIcon())
                 .stringTargetMatrix(getStringTargetMatrix())
                 .famine(getLimits().getMaxFood())
-                .age(1)
                 .build();
     }
 
