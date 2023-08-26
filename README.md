@@ -8,7 +8,7 @@ The "AnimalAbstractGame" project is an ecological system simulation where realis
 
 - **Food Chains**: Animals have dietary preferences and can consume plants and other animals. Predators can hunt herbivores, adding realism to the ecosystem.
 
-- **Reproduction**: Animals can reproduce, leading to population growth. This process depends on the environmental conditions and the availability of partners for reproduction.
+- **Reproduction**: Animals can reproduce, which leads to population growth. This process depends on the availability of breeding partners and is random.
 
 - **Survival and Hunger**: Each animal has a hunger level that decreases over time without food. When the hunger level reaches a certain threshold, the animal can die of starvation.
 
