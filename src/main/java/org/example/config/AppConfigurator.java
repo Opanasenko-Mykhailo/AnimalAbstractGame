@@ -14,7 +14,6 @@ public class AppConfigurator {
     private final GameObjectPrototypeFactory gameObjectFactory = GameObjectPrototypeFactory.getInstance();
     private final GameMapGenerator gameMapGenerator = GameMapGenerator.getInstance();
     private final CellGenerator cellGenerator = CellGenerator.getInstance();
-    private final CellPopulator cellPopulator = CellPopulator.getInstance();
     private final Simulation simulation = Simulation.getInstance();
 
 
@@ -31,7 +30,6 @@ public class AppConfigurator {
     public void init() {
         registerPrototypes();
         GameMap.setInstance(generateGameMap());
-        cellPopulator.populateGameMap(GameMap.getInstance());
         simulation.startSimulation();
 
     }
